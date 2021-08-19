@@ -215,6 +215,7 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
     
     #Get the source vertex (`source`) using the function `graph.get_vertex_from_coords(i,j)`.
     source = graph.get_vertex_from_coords(source_coordinates[0], source_coordinates[1])
+    d = graph.get_vertex_from_coords(dest_coordinates[0], dest_coordinates[1])
     
     #Set the `source.d` field to 0 to indicate that distance of source from source is 0.
     source.d = 0
@@ -223,7 +224,7 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
     q.insert(source)
     
     #While the priority queue is not empty.
-    while not q.is_empty:
+    while not q.is_empty():
         #Get the vertex with minimum value of d and delete it (use `get_and_delte_min` function). Let's call this vertex `u`.
         u = q.get_and_delete_min()
         #Set the processed field of `u` to True.
@@ -235,10 +236,11 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
             break
             
         #For each outgoing edge from `u` to `v` with weight `w`
-        for v in graph.get_list_of_neighbors(u):
-            w = graph.get_edge_weight(u, v)
+        for k in range(len(graph.get_list_of_neighbors(u))):
+            v = graph.get_list_of_neighbors(u)[k][0]
+            w = graph.get_list_of_neighbors(u)[k][1]
             #If `v` is not already processed and `v.d > u.d + w` then 
-            if v.processed != True and v.d > (u.d + w):
+            if v.processed == False and v.d > (u.d + w):
                 #update `v.d` to `u.d + w`. Set `v.pi` to `u`.
                 v.d = u.d + w
                 v.pi = u
@@ -249,11 +251,14 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
                 #that `v` is moved to the appropriate place in the priority queue.
                 else:
                     q.update_vertex_weight(v)
-    #To get the path, start from the destination vertex and keep taking the parent pointer until we reach 
-    #the source. Store the sequence of vertices in a path.
-    nextnode = graph.get_vertex_from_coords(dest_coordinates[0], dest_coordinates[1])
-    path = path.append(nextnode.pi)
-    nextnode = nextnode.pi
+        #To get the path, start from the destination vertex and keep taking the parent pointer until we reach 
+        #the source. Store the sequence of vertices in a path.
+        #print(shortest_path_distance)
+        path = []
+        nextnode = d
+        while nextnode != source:
+            path = path.append((nextnode.pi.x, nextnode.pi.y))
+            nextnode = nextnode.pi
     
     #Return the (path, shortest path distance)
     return path, shortest_path_distance
