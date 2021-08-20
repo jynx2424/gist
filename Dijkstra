@@ -227,8 +227,10 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
     while not q.is_empty():
         #Get the vertex with minimum value of d and delete it (use `get_and_delte_min` function). Let's call this vertex `u`.
         u = q.get_and_delete_min()
+        
         #Set the processed field of `u` to True.
         u.processed = True 
+        
         #If `u` has the same coordinates as destination (use `u.x` and `u.y`) then 
         if u.x == d.x and u.y == d.y:
             #shortest path distance is `u.d` and break from the loop.
@@ -251,12 +253,14 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
                 #that `v` is moved to the appropriate place in the priority queue.
                 else:
                     q.update_vertex_weight(v)
+                 
+        
     #To get the path, start from the destination vertex and keep taking the parent pointer until we reach 
     #the source. Store the sequence of vertices in a path.
-    path = []
+    path = [(d.x, d.y)]
     nextnode = d
     while nextnode != source:
-        path = path.append((nextnode.pi.x, nextnode.pi.y))
+        path.insert(0,(nextnode.pi.x, nextnode.pi.y))
         nextnode = nextnode.pi
     
     #Return the (path, shortest path distance)
