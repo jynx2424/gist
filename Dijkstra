@@ -251,14 +251,13 @@ def computeShortestPath(graph, source_coordinates, dest_coordinates):
                 #that `v` is moved to the appropriate place in the priority queue.
                 else:
                     q.update_vertex_weight(v)
-        #To get the path, start from the destination vertex and keep taking the parent pointer until we reach 
-        #the source. Store the sequence of vertices in a path.
-        #print(shortest_path_distance)
-        path = []
-        nextnode = d
-        while nextnode != source:
-            path = path.append((nextnode.pi.x, nextnode.pi.y))
-            nextnode = nextnode.pi
+    #To get the path, start from the destination vertex and keep taking the parent pointer until we reach 
+    #the source. Store the sequence of vertices in a path.
+    path = []
+    nextnode = d
+    while nextnode != source:
+        path = path.append((nextnode.pi.x, nextnode.pi.y))
+        nextnode = nextnode.pi
     
     #Return the (path, shortest path distance)
     return path, shortest_path_distance
